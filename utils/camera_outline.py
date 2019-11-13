@@ -104,25 +104,33 @@ def locate_mine(original, img, x_range=[500, 1350]):
     return original, blocks
 
 def main():
-    # Given snapshot
-    snap = cv2.imread('snapshot.jpg')
-    cv2.imshow('snap', snap)
-    cv2.waitKey()
-    outline, _ = detection(snap, 10, [500,1350])
-    cv2.imshow('Outline', outline)
-    cv2.waitKey()
 
-    # Real camera
-    cap = cv2.VideoCapture(1)
-    while True:
-        _, frame = cap.read()
-        cv2.imshow('frame', frame)
-        outline, _ = detection(snap, 10, [500,1350])
+    x_range = [500, 1350]
+    contract_coefficient = 10
+    snap_shot_test = True
+    real_camera_test = False
+
+    if snap_shot_test:
+        # Given snapshot
+        snap = cv2.imread('../playground/snapshot.jpg')
+        cv2.imshow('snap', snap)
+        cv2.waitKey()
+        outline, _ = detection(snap, contract_coefficient, x_range)
         cv2.imshow('Outline', outline)
+        cv2.waitKey()
 
-        k = cv2.waitKey(5) & 0xFF
-        if k == 27:
-            break
+    if real_camera_test:
+        # Real camera
+        cap = cv2.VideoCapture(1)
+        while True:
+            _, frame = cap.read()
+            cv2.imshow('frame', frame)
+            outline, _ = detection(snap, contract_coefficient, x_range)
+            cv2.imshow('Outline', outline)
+
+            k = cv2.waitKey(5) & 0xFF
+            if k == 27:
+                break
 
 if __name__ == "__main__":
     main()
