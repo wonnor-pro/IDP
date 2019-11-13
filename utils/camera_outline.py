@@ -25,6 +25,12 @@ def high_pass(img):
     return filtered
 
 def detection(img, contract_co=10, x_range=[500, 1350]):
+    '''
+    :param img: numpy array
+    :param contract_co: contract coefficient
+    :param x_range: search region
+    :return:
+    '''
     outline = draw_contour(img.copy(), contract_co)
     output_img, blocks = locate_mine(img, outline, x_range)
 
@@ -34,8 +40,7 @@ def draw_contour(img, contract_co=10):
     '''
     :param img: numpy array
     :param contract_co: contract coefficient
-    :param draw_color: color of contour you would like to draw
-    :return:
+    :return: new: new img(black background) with contour(white) on it.
     '''
 
     # Convert to gray img
@@ -64,10 +69,12 @@ def draw_contour(img, contract_co=10):
 
 def locate_mine(img, outline, x_range=[500, 1350]):
     '''
+    given the original img (for demonstration) and outline (generated from draw_contour), x_range (detection region)
+    This function would return the demo img (with region and mines marked) and mine coordinates list
     :param img: numpy array
-    :param contract_co: contract coefficient
-    :param draw_color: color of contour you would like to draw
-    :return:
+    :param outline: numpy array(same dimension with img)
+    :param x_range: the x_range to perform search
+    :return: img: numpy array; landmine: list of mine coordinates(x,y)
     '''
     # Convert to binary img
     gray = outline.copy()
