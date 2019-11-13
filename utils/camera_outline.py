@@ -79,7 +79,6 @@ def locate_mine(img, outline, x_range=[500, 1350]):
 
     # detect mines
     landmine = []
-    landmine_x = []
 
     for i in range(len(contours)):
 
@@ -95,27 +94,26 @@ def locate_mine(img, outline, x_range=[500, 1350]):
             # determine if its a new mine
 
             new_mine = True
-            for x_history in landmine_x:
-                if abs(x_history - centre_x) < 2:
+            for history in landmine:
+                if abs(history[0] - centre_x) < 2 and abs(history[1] - centre_y) < 2:
                     new_mine = False
 
             if new_mine:
 
                 # add coordinates to the mine list
                 landmine.append((centre_x, centre_y))
-                landmine_x.append(centre_x)
 
                 # Draw circle on the map
                 cv2.circle(img, (int(centre_x), int(centre_y)), 5, (0, 255, 0), 3)
-
-                # Draw rectangle on the map
-                cv2.rectangle(img, (top_x, top_y), (btm_x, btm_y), (0, 255, 0), 2)
 
                 # Print location
                 print("Landmine detected at ({},{})".format(centre_x, centre_y))
 
     # Draw the detection region (x range)
     cv2.rectangle(img, (x_range[0], 0), (x_range[1], 1080), (255, 0, 0), 2)
+
+    # Summarise
+    print("{} landmines are detected!".format(len(landmine)))
 
     return img, landmine
 
@@ -128,7 +126,7 @@ def main():
 
     if snap_shot_test:
         # Given snapshot
-        snap = cv2.imread('../playground/snapshot1.jpg')
+        snap = cv2.imread('../playground/snapshot.jpg')
         cv2.imshow('snap', snap)
         cv2.waitKey()
         result_img, _ = detection(snap, contract_coefficient, x_range)
