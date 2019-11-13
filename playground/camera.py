@@ -1,6 +1,7 @@
 import cv2
 import numpy as np
 import math
+import sys
 
 
 class Camera:
@@ -234,15 +235,34 @@ class Camera:
             else:
                 return None, None
 
+    def contract(self, img, a):
+        O = img * float(a)
+        O[O > 255] = 255
+        O = np.round(O)
+        O = O.astype(np.uint8)
+
+        return O
+
     def get_block_coords(self, block_colour_bounds=None):
         """Returns position of blocks as a list of tuples (x, y)"""
         # Get data from webcam
         if block_colour_bounds is None:
-            block_colour_bounds = [91, 114]
-        _, frame = self.capture.read()
+            block_colour_bounds = [0, 255]
+
+        # _, frame = self.capture.read()
+        frame = cv2.imread('snapshot1.jpg')
+        cv2.imshow('frame', frame)
+        cv2.waitKey()
+        frame = self.contract(frame, 2)
+        cv2.imshow('contract', frame)
+        cv2.waitKey()
 
         # Convert BGR to HSV
         hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
+        lab = cv2.cvtColor(frame, cv2.COLOR_BGR2LAB)
+
+        cv2.imshow('hsv', hsv)
+        cv2.waitKey(0)
 
         # define range of blue color in HSV
         lower_blue = np.array([block_colour_bounds[0], 50, 50])
@@ -250,6 +270,9 @@ class Camera:
 
         # Threshold the HSV image to get only blue colors
         mask = cv2.inRange(hsv, lower_blue, upper_blue)
+
+        cv2.imshow('mask', mask)
+        cv2.waitKey(0)
 
         # Setup noise reducing variables
         kernel_open = np.ones((4, 4))
@@ -262,7 +285,9 @@ class Camera:
         res = cv2.bitwise_and(frame, frame, mask=mask)
         res2 = cv2.bitwise_and(frame, frame, mask=mask_close)
         cv2.imshow('res', res)
+        cv2.waitKey(0)
         cv2.imshow('morphology', res2)
+        cv2.waitKey(0)
 
         # Get contours
         conts, h = cv2.findContours(mask_close.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
@@ -275,7 +300,9 @@ class Camera:
                 blocks.append((x + w / 2, y + h / 2))
                 cv2.circle(frame, (int(x + w / 2), int(y + h / 2)), 5, (0, 0, 255), 3)
                 cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 0, 255), 2)
+                print("Block detected!")
 
+        cv2.imshow('new', frame)
         if self.return_frame:
             return blocks, frame
         else:
@@ -285,12 +312,13 @@ class Camera:
 def main():
     camera = Camera(1, True)
     while True:
+        _, frame = camera.capture.read()
         blocks, frame = camera.get_block_coords()
-        position, angle, frame2 = camera.get_robot_position()
+        # position, angle, frame2 = camera.get_robot_position()
         #print(angle)
-        cv2.rectangle(frame, (25,25), (600,480), (255,0,0), 2)
+        # cv2.rectangle(frame, (25,25), (600,480), (255,0,0), 2)
         cv2.imshow('frame', frame)
-        cv2.imshow('frame2', frame2)
+        # cv2.imshow('frame2', frame2)
         k = cv2.waitKey(5) & 0xFF
         if k == 27:
             break
