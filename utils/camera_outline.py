@@ -62,46 +62,62 @@ def draw_contour(img, contract_co=10):
 
     return new
 
-def locate_mine(original, img, x_range=[500, 1350]):
+def locate_mine(img, outline, x_range=[500, 1350]):
     '''
     :param img: numpy array
     :param contract_co: contract coefficient
     :param draw_color: color of contour you would like to draw
     :return:
     '''
-    # Convert to gray img
-    gray = img.copy()
+    # Convert to binary img
+    gray = outline.copy()
     gray = cv2.cvtColor(gray,cv2.COLOR_BGR2GRAY)
-
     ret, binary = cv2.threshold(gray,127,255,cv2.THRESH_BINARY)
 
     # detect contours
     contours, hierarchy = cv2.findContours(binary, cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE)
 
     # detect mines
-    blocks = []
+    landmine = []
+    landmine_x = []
 
     for i in range(len(contours)):
-        x, y, w, h = cv2.boundingRect(contours[i])
+
+        top_x, top_y, w, h = cv2.boundingRect(contours[i])
+        centre_x = top_x + w / 2
+        centre_y = top_y + h / 2
+        btm_x = top_x + w
+        btm_y = top_y + h
+
         # choosing the size of contours, width, height, and x location
-        if 6 < w < 25 and 6 < h < 25 and x > x_range[0] and x < x_range[1]:
+        if 6 < w < 25 and 6 < h < 25 and top_x > x_range[0] and top_x < x_range[1]:
 
-            # add coordinates to the mine list
-            blocks.append((x + w / 2, y + h / 2))
+            # determine if its a new mine
 
-            # Draw circle on the map
-            cv2.circle(original, (int(x + w / 2), int(y + h / 2)), 5, (0, 255, 0), 3)
+            new_mine = True
+            for x_history in landmine_x:
+                if abs(x_history - centre_x) < 2:
+                    new_mine = False
 
-            # Draw rectangle on the map
-            cv2.rectangle(original, (x, y), (x + w, y + h), (0, 255, 0), 2)
+            if new_mine:
 
-            # Print location
-            print("Block detected at ({},{})".format(x + w / 2, y + h / 2))
+                # add coordinates to the mine list
+                landmine.append((centre_x, centre_y))
+                landmine_x.append(centre_x)
+
+                # Draw circle on the map
+                cv2.circle(img, (int(centre_x), int(centre_y)), 5, (0, 255, 0), 3)
+
+                # Draw rectangle on the map
+                cv2.rectangle(img, (top_x, top_y), (btm_x, btm_y), (0, 255, 0), 2)
+
+                # Print location
+                print("Landmine detected at ({},{})".format(centre_x, centre_y))
 
     # Draw the detection region (x range)
-    cv2.rectangle(original, (x_range[0], 0), (x_range[1], 1080), (255, 0, 0), 2)
+    cv2.rectangle(img, (x_range[0], 0), (x_range[1], 1080), (255, 0, 0), 2)
 
-    return original, blocks
+    return img, landmine
 
 def main():
 
@@ -112,11 +128,11 @@ def main():
 
     if snap_shot_test:
         # Given snapshot
-        snap = cv2.imread('../playground/snapshot.jpg')
+        snap = cv2.imread('../playground/snapshot1.jpg')
         cv2.imshow('snap', snap)
         cv2.waitKey()
-        outline, _ = detection(snap, contract_coefficient, x_range)
-        cv2.imshow('Outline', outline)
+        result_img, _ = detection(snap, contract_coefficient, x_range)
+        cv2.imshow('Result Img', result_img)
         cv2.waitKey()
 
     if real_camera_test:
@@ -125,8 +141,8 @@ def main():
         while True:
             _, frame = cap.read()
             cv2.imshow('frame', frame)
-            outline, _ = detection(snap, contract_coefficient, x_range)
-            cv2.imshow('Outline', outline)
+            result_img, _ = detection(snap, contract_coefficient, x_range)
+            cv2.imshow('Result_Img', result_img)
 
             k = cv2.waitKey(5) & 0xFF
             if k == 27:
