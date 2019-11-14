@@ -8,7 +8,7 @@ void setup() {
 void loop() {
   String data;
   while (Serial.available())
-  {data = Serial.read();}
+  {data = Serial.readString();}
   
   if (data == '1')
   digitalWrite (LED_BUILTIN, HIGH);
