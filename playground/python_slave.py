@@ -2,7 +2,7 @@ import serial  # Serial imported for Serial communication
 import time  # Required to use delay functions
 
 # Create Serial port object called arduinoSerialData
-ArduinoSerial = serial.Serial('/dev/cu.usbmodem145202', 9600)
+ArduinoSerial = serial.Serial('/dev/cu.usbmodem141202', 9600)
 
 # wait for 2 secounds for the communication to get established
 time.sleep(2)
@@ -14,7 +14,7 @@ print("Enter \"yes\" to turn ON LED and \"no\" to turn OFF LED")
 while 1:  # Do this forever
     # get input from user
     var = input()
-    # print the intput for confirmation
+    # print the input for confirmation
     print("you entered", var)
 
     # if the value is yes

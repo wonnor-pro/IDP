@@ -120,7 +120,7 @@ def locate_mine(img, outline, x_range=[500, 1350]):
     cv2.rectangle(img, (x_range[0], 0), (x_range[1], 1080), (255, 0, 0), 2)
 
     # Summarise
-    print("{} landmines are detected!".format(len(landmine)))
+    # print("{} landmines are detected!".format(len(landmine)))
 
     return img, landmine
 
@@ -146,7 +146,7 @@ def main():
         while True:
             _, frame = cap.read()
             cv2.imshow('frame', frame)
-            result_img, _ = detection(snap, contract_coefficient, x_range)
+            result_img, _ = detection(frame, contract_coefficient, x_range)
             cv2.imshow('Result_Img', result_img)
 
             k = cv2.waitKey(5) & 0xFF
