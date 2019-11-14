@@ -2,7 +2,7 @@ import serial  # Serial imported for Serial communication
 import time  # Required to use delay functions
 
 # Create Serial port object called arduinoSerialData
-ArduinoSerial = serial.Serial('/dev/cu.usbmodem141202', 9600)
+ArduinoSerial = serial.Serial('/dev/cu.usbmodem146102', 9600)
 
 # wait for 2 secounds for the communication to get established
 time.sleep(2)
