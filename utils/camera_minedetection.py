@@ -49,7 +49,7 @@ def draw_contour(img, contract_co=10):
 
     # Enhancing the image
     gray = contract(gray, contract_co)
-    # cv2.imshow("gray", gray)
+    cv2.imshow("gray", gray)
     # cv2.waitKey()
 
     ret, binary = cv2.threshold(gray,127,255,cv2.THRESH_BINARY)
@@ -60,6 +60,8 @@ def draw_contour(img, contract_co=10):
     # draw
     new = np.zeros(img.shape, np.uint8)
     new = cv2.drawContours(new, contours, -1, (255, 255, 255), 3)
+
+    cv2.imshow("Contour", new)
 
     # # show
     # cv2.imshow("show_on_img", img)
@@ -127,9 +129,9 @@ def locate_mine(img, outline, x_range=[500, 1350]):
 def main():
 
     x_range = [500, 1350]
-    contract_coefficient = 10
-    snap_shot_test = True
-    real_camera_test = False
+    contract_coefficient = 2
+    snap_shot_test = False
+    real_camera_test = True
 
     if snap_shot_test:
         # Given snapshot
@@ -146,7 +148,7 @@ def main():
         while True:
             _, frame = cap.read()
             cv2.imshow('frame', frame)
-            result_img, _ = detection(snap, contract_coefficient, x_range)
+            result_img, _ = detection(frame, contract_coefficient, x_range)
             cv2.imshow('Result_Img', result_img)
 
             k = cv2.waitKey(5) & 0xFF
