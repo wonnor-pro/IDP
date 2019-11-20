@@ -1,4 +1,4 @@
-m #include <Adafruit_MotorShield.h>
+#include <Adafruit_MotorShield.h>
 
 Adafruit_MotorShield AFMS = Adafruit_MotorShield(); 
 Adafruit_DCMotor *right_motor = AFMS.getMotor(1);
@@ -22,14 +22,5 @@ void loop() {
 
   left_motor->run(FORWARD);
   right_motor->run(BACKWARD);
-  delay(2500);
-
-  right_motor->setSpeed(96);
-  left_motor->setSpeed(100);
-
-  right_motor->run(BACKWARD);
-  left_motor->run(BACKWARD);
-  delay(2430);
-  count ++;
-  }
+  delay(2500);}
 }
