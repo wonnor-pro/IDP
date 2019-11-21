@@ -17,8 +17,8 @@ int count = 0;
 void loop() {
   // put your main code here, to run repeatedly:
   while (1){
-  right_motor->setSpeed(96);
-  left_motor->setSpeed(100);
+  right_motor->setSpeed(144);
+  left_motor->setSpeed(150);
 
   left_motor->run(FORWARD);
   right_motor->run(BACKWARD);

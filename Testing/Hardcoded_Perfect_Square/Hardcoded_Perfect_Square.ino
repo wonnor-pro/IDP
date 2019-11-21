@@ -3,10 +3,11 @@
 Adafruit_MotorShield AFMS = Adafruit_MotorShield(); 
 Adafruit_DCMotor *right_motor = AFMS.getMotor(1);
 Adafruit_DCMotor *left_motor = AFMS.getMotor(2);
-int right_motor_speed = 96;
-int left_motot_speed = 100;
-int turn_90 = 2450;
+int right_motor_speed = 144;
+int left_motot_speed = 150;
+int turn_90 = 2156;
 int moving_time = 2000;
+int first = 0;
 
 void setup() {
   // put your setup code here, to run once:
@@ -19,6 +20,11 @@ void setup() {
 int count = 0;
 
 void loop() {
+
+  if (first == 0){
+    delay (3000);
+    first ++;
+  }
   // put your main code here, to run repeatedly:
   while (1){
     

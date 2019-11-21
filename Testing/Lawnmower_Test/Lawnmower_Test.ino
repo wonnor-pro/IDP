@@ -4,26 +4,27 @@ Adafruit_MotorShield AFMS = Adafruit_MotorShield();
 Adafruit_DCMotor *right_motor = AFMS.getMotor(1);
 Adafruit_DCMotor *left_motor = AFMS.getMotor(2);
 Adafruit_DCMotor *mine_motor = AFMS.getMotor(3);
-int right_motor_speed = 144;
-int left_motor_speed = 150;
-int turn_90 = 2156;
-int moving_time = 2000;
 
 // defines pins numbers
 const int trigPin = 12;
 const int echoPin = 11;
 // defines variables
+int right_motor_speed = 144;
+int left_motor_speed = 150;
+int turn_90 = 2156;
+int moving_time = 2000;
 long duration;
 int count = 0;
-//int array1 = [0,0,0,0,0];
 int average = 0;
+int threshold = 10;
+bool moving = false;
 
 void setup() {
   pinMode(trigPin, OUTPUT); // Sets the trigPin as an Output
   pinMode(echoPin, INPUT); // Sets the echoPin as an Input
   Serial.begin(9600); // Starts the serial communication
 
-  //Serial.println("Adafruit Motorshield v2 - DC Motor test!");
+  Serial.println("Lawnmower Test!!!");
 
   AFMS.begin();
 }
@@ -32,15 +33,9 @@ void loop() {
 
   mine_motor->setSpeed(100);
   mine_motor->run(FORWARD);
-  
-  //array1[0] = array1[1];
-  //array1[1] = array1[2];
-  //array1[2] = array1[3];
-  //array1[3] = array1[4];
-  //array1[4] = distance;
-  //average = array1[0]+array1[1]+array1[2]+array1[3]+array1[4];
-  //average = average / 5;
 
+
+//Put into Fn
   int distance = 0;
   for (int i=0; i<5; i++){
     distance = distance + getdistance(); 
@@ -51,14 +46,30 @@ void loop() {
 
   Serial.print("--------------- Average: ");
   Serial.println(average);
+  //
   
-  if (average > 10) {
-  move_straight(right_motor_speed, left_motor_speed, 3000);
+  if (average > threshold) {
+  move_straight(right_motor_speed, left_motor_speed);
   }
   
-  if (average < 10) {
-  stop_motor();
-  }
+  if (average < threshold) {
+    Serial.println(String(count == 0));
+    Serial.println(String(count == 1));
+    if (count == 0){
+      turn(right_motor_speed, left_motor_speed, 90);
+      move_straight(right_motor_speed, left_motor_speed);
+      delay(2000);
+      turn(right_motor_speed, left_motor_speed, 90);
+      count ++;
+      }
+    else{
+      turn(right_motor_speed, left_motor_speed, -90);
+      move_straight(right_motor_speed, left_motor_speed);
+      delay(2000);
+      turn(right_motor_speed, left_motor_speed, -90);
+      count --;
+    }
+}
 }
 
 void stop_motor(){
@@ -67,7 +78,7 @@ void stop_motor(){
 }
 
 
-void move_straight(int right_motor_speed, int left_motor_speed, int moving_time) {
+void move_straight(int right_motor_speed, int left_motor_speed) {
   //Serial.println("Adafruit moving straight.");
   right_motor->setSpeed(right_motor_speed);
   left_motor->setSpeed(left_motor_speed);
@@ -90,6 +101,7 @@ void turn(int right_motor_speed, int left_motor_speed, int angle) {
       left_motor->run(FORWARD);
     }
   moving_time = angle * ((turn_90) / 90);
+  delay(moving_time);
   //Serial.println(String(moving_time));
 }
 
