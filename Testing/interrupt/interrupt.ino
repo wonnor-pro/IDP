@@ -8,6 +8,12 @@ Adafruit_DCMotor *mine_motor = AFMS.getMotor(3);
 // defines pins numbers
 const int trigPin = 12;
 const int echoPin = 11;
+
+// trigger
+// defines pins numbers
+const int trigPin_T = 9;
+const int echoPin_T = 8;
+
 // defines variables
 int right_motor_speed = 189;
 int left_motor_speed = 200;
@@ -18,13 +24,20 @@ int moving_straight_time_start = 3500;
 long duration;
 int count = 0;
 int average = 0;
+int average_T = 0;
 int threshold = 20;
+int threshold_T = 5;
 bool moving = false;
 int first = 0;
+int connor = 0;
 
 void setup() {
   pinMode(trigPin, OUTPUT); // Sets the trigPin as an Output
   pinMode(echoPin, INPUT); // Sets the echoPin as an Input
+
+  pinMode(trigPin_T, OUTPUT); // Sets the trigPin as an Output
+  pinMode(echoPin_T, INPUT); // Sets the echoPin as an Input
+  
   Serial.begin(9600); // Starts the serial communication
 
   Serial.println("Lawnmower Test!!!");
@@ -47,41 +60,65 @@ void loop() {
   mine_motor->run(FORWARD);
 
 
-//Put into Fn
+  //Put into Fn
   int distance = 0;
   for (int i=0; i<5; i++){
     distance = distance + getdistance(); 
-    Serial.print(" sum");
-    Serial.println(distance);
+//    Serial.print(" sum");
+//    Serial.println(distance);
     delay(10);}
   average = distance / 5;
 
-  Serial.print("--------------- Average: ");
-  Serial.println(average);
-  //
-  
-  if (average > threshold) {
-  move_straight(right_motor_speed, left_motor_speed);
-  }
-  
-  if (average < threshold) {
-    Serial.println(String(count == 0));
-    Serial.println(String(count == 1));
-    if (count == 0){
-      turn(right_motor_speed, left_motor_speed, 90); //Turns right
-      move_straight(right_motor_speed, left_motor_speed);
-      delay(moving_straight_time);
-      turn(right_motor_speed, left_motor_speed, 90); //Turns right
-      count ++;
-      }
-    else{
-      turn(right_motor_speed, left_motor_speed, -90); //Turns left
-      move_straight(right_motor_speed, left_motor_speed);
-      delay(moving_straight_time);
-      turn(right_motor_speed, left_motor_speed, -90); //Turns left
-      count --;
+//  Serial.print("--------------- Average: ");
+//  Serial.println(average);
+
+
+
+  //Put into Fn
+  int distance_T = 0;
+  for (int i=0; i<5; i++){
+    distance_T = distance_T + getdistance_T(); 
+    Serial.println("    distance: " + String(distance_T));
+    delay(10);}
+  average_T = distance_T / 5;
+  Serial.println("    average: " + String(average_T));
+
+  // trigerred
+  if (average_T < threshold_T) {
+   connor = 1;
+   }
+
+  // Wall
+  if (connor == 0){
+    if (average > threshold) {
+    move_straight(right_motor_speed, left_motor_speed);
     }
-}
+    
+    if (average < threshold) {
+      Serial.println(String(count == 0));
+      Serial.println(String(count == 1));
+      if (count == 0){
+        turn(right_motor_speed, left_motor_speed, 90); //Turns right
+        move_straight(right_motor_speed, left_motor_speed);
+        delay(moving_straight_time);
+        turn(right_motor_speed, left_motor_speed, 90); //Turns right
+        count ++;
+        }
+      else{
+        turn(right_motor_speed, left_motor_speed, -90); //Turns left
+        move_straight(right_motor_speed, left_motor_speed);
+        delay(moving_straight_time);
+        turn(right_motor_speed, left_motor_speed, -90); //Turns left
+        count --;
+      }
+  }
+  }
+
+  if (connor == 1){
+    stop_motor();
+    delay(3000);
+    connor = 0;
+  }
 }
 
 void stop_motor(){
@@ -131,6 +168,26 @@ int getdistance(){
   distance1= duration*0.034/2;
   // Prints the distance on the Serial Monitor
 //  
+//  Serial.print("Distance: ");
+//  Serial.println(distance1);
+  
+  return distance1;
+}
+
+int getdistance_T(){
+  int distance1;
+  digitalWrite(trigPin_T, LOW);
+  delayMicroseconds(2);
+  // Sets the trigPin on HIGH state for 10 micro seconds
+  digitalWrite(trigPin_T, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(trigPin_T, LOW);
+  // Reads the echoPin, returns the sound wave travel time in microseconds
+  duration = pulseIn(echoPin_T, HIGH);
+  // Calculating the distance
+  distance1= duration*0.034/2;
+  // Prints the distance on the Serial Monitor
+
   Serial.print("Distance: ");
   Serial.println(distance1);
   
