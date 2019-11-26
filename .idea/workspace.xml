@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="2a069c71-0ff1-44c4-afa7-b983ce15fc0a" name="Default Changelist" comment="" />
+    <list default="true" id="2a069c71-0ff1-44c4-afa7-b983ce15fc0a" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/camera_minedetection.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/camera_minedetection.py" afterDir="false" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -25,8 +28,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/playground/motor_test.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="326">
-              <caret line="18" column="18" lean-forward="true" selection-start-line="18" selection-start-column="18" selection-end-line="18" selection-end-column="18" />
+            <state relative-caret-position="374">
+              <caret line="18" column="18" selection-start-line="18" selection-start-column="18" selection-end-line="18" selection-end-column="18" />
               <folding>
                 <element signature="e#0#57#0" expanded="true" />
               </folding>
@@ -37,11 +40,10 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/utils/camera_minedetection.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2518">
-              <caret line="118" column="13" selection-start-line="118" selection-start-column="13" selection-end-line="118" selection-end-column="13" />
+            <state relative-caret-position="300">
+              <caret line="143" column="26" selection-start-line="143" selection-start-column="20" selection-end-line="143" selection-end-column="26" />
               <folding>
                 <element signature="e#0#10#0" expanded="true" />
-                <element signature="e#3701#4490#0" />
               </folding>
             </state>
           </provider>
@@ -158,9 +160,8 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1680" height="1050" extended-state="0" />
-    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.25885227" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.26190478" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -273,8 +274,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/playground/motor_test.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="326">
-          <caret line="18" column="18" lean-forward="true" selection-start-line="18" selection-start-column="18" selection-end-line="18" selection-end-column="18" />
+        <state relative-caret-position="374">
+          <caret line="18" column="18" selection-start-line="18" selection-start-column="18" selection-end-line="18" selection-end-column="18" />
           <folding>
             <element signature="e#0#57#0" expanded="true" />
           </folding>
@@ -283,11 +284,10 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/utils/camera_minedetection.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2518">
-          <caret line="118" column="13" selection-start-line="118" selection-start-column="13" selection-end-line="118" selection-end-column="13" />
+        <state relative-caret-position="300">
+          <caret line="143" column="26" selection-start-line="143" selection-start-column="20" selection-end-line="143" selection-end-column="26" />
           <folding>
             <element signature="e#0#10#0" expanded="true" />
-            <element signature="e#3701#4490#0" />
           </folding>
         </state>
       </provider>

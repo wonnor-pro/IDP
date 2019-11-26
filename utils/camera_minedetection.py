@@ -49,8 +49,8 @@ def draw_contour(img, contract_co=10):
 
     # Enhancing the image
     gray = contract(gray, contract_co)
-    # cv2.imshow("gray", gray)
-    # cv2.waitKey()
+    cv2.imshow("gray", gray)
+    cv2.waitKey()
 
     ret, binary = cv2.threshold(gray,127,255,cv2.THRESH_BINARY)
 
@@ -76,6 +76,10 @@ def locate_mine(img, outline, x_range=[500, 1350]):
     :param x_range: the x_range to perform search
     :return: img: numpy array; landmine: list of mine coordinates(x,y)
     '''
+
+    cv2.imshow("outline", outline)
+    cv2.waitKey(0)
+
     # Convert to binary img
     gray = outline.copy()
     gray = cv2.cvtColor(gray,cv2.COLOR_BGR2GRAY)
