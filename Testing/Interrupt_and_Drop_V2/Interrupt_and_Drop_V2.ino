@@ -194,6 +194,8 @@ void loop() {
     left_motor->run(FORWARD);
     delay(5000);
     mine_motor->setSpeed(0);
+    right_motor->setSpeed(0);
+    left_motor->setSpeed(0);
     delay(1000);
     if (count==0){
       turn(right_motor_speed, left_motor_speed, -90);

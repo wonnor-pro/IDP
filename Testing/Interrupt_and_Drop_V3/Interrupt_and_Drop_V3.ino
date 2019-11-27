@@ -28,6 +28,7 @@ int average = 0;
 int average_T = 0;
 int threshold = 20;
 int threshold_T = 5;
+int threshold_arc = 30;
 bool moving = false;
 int first = 0;
 int connor = 0;
@@ -194,6 +195,8 @@ void loop() {
     left_motor->run(FORWARD);
     delay(5000);
     mine_motor->setSpeed(0);
+    right_motor->setSpeed(0);
+    left_motor->setSpeed(0);
     delay(1000);
     if (count==0){
       turn(right_motor_speed, left_motor_speed, -90);
@@ -211,12 +214,16 @@ void loop() {
         //Serial.println("    distance: " + String(distance_T));
         delay(10);}
         int average_drop = distance_drop / 5;
-        if (average_drop<threshold){
+        if (average_drop<threshold_arc){
           break;
           }
         }
       //auto t2 = std::chrono::high_resolution_clock::now();
-      turn(right_motor_speed, left_motor_speed, 90);
+      //turn(right_motor_speed, left_motor_speed, 90);
+      right_motor->run(FORWARD);
+      left_motor->run(FORWARD);
+      right_motor->setSpeed(25);
+      left_motor->setSpeed(100);
       stop_motor();
       //auto t3 = std::chrono::high_resolution_clock::now();
       move_straight(right_motor_speed, left_motor_speed);
