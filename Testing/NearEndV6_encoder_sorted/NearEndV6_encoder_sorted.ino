@@ -1,3 +1,6 @@
+// IDP Project 28 Nov 2019
+// Group 205
+
 #include <Adafruit_MotorShield.h>
 
 Adafruit_MotorShield AFMS = Adafruit_MotorShield(); 
@@ -45,7 +48,6 @@ int if_in_collection = 0;
 int buttonState; // botton for motor underneath
 
 int a = 0;
-
 
 // LED flashing variables
 int led_status = LOW;
@@ -162,7 +164,7 @@ void turn(int right_motor_speed, int left_motor_speed, int angle) {
 
 int get_single_distance(int trigPin, int echoPin){
   
-  int distance1;
+  int distance_1;
   digitalWrite(trigPin, LOW);
   delayMicroseconds(2);
   // Sets the trigPin on HIGH state for 10 micro seconds
@@ -172,9 +174,10 @@ int get_single_distance(int trigPin, int echoPin){
   // Reads the echoPin, returns the sound wave travel time in microseconds
   duration = pulseIn(echoPin, HIGH);
   // Calculating the distance
-  distance1= duration*0.034/2;
+  distance_1 = duration*0.034/2;
   
-  return distance1;
+  return distance_1;
+  
 } // get_single_distance
 
 // ----------------------------------------------------------------
@@ -293,6 +296,7 @@ void loop() {
 
     // Unflag the status
     if_first = 0;
+    
    } // if - initial turning
    
 
@@ -318,7 +322,7 @@ void loop() {
   if (if_mine == 0){
     
     // NO Wall, Moving Straight
-    if (average > threshold) {move_straight(right_motor_speed, left_motor_speed);} // if
+    if (average  > threshold) {move_straight(right_motor_speed, left_motor_speed);} // if
     // Wall, Turning
     if (average <= threshold) {wall_action();} // if average < threshold
     
