@@ -10,6 +10,8 @@ Adafruit_DCMotor *mine_motor = AFMS.getMotor(3);
 const int trigPin = 12;
 const int echoPin = 11;
 const int buttonpin = 0;
+const int RLED_Pin = 5;
+const int OLED_Pin = 4;
 
 // trigger
 // defines pins numbers
@@ -37,7 +39,10 @@ int a = 0;
 int buttonState;
 int temp;
 int harsh;
-int var3=0;
+int var3 = 0;
+int led_status = LOW;
+int if_led_flashing = true;
+int led_count = 0;
 unsigned long time_1;
 unsigned long time_2;
 unsigned long time_3;
@@ -53,9 +58,22 @@ void setup() {
   pinMode(echoPin_T, INPUT); // Sets the echoPin as an Input
 
   pinMode(buttonpin, INPUT);
+
+  // Initialise LED
+  pinMode(RLED_Pin, OUTPUT);
+  digitalWrite (RLED_Pin, LOW);
+  pinMode(OLED_Pin, OUTPUT);
+  digitalWrite (OLED_Pin, LOW);
+  
+  // initialize timer2
+  noInterrupts();           // disable all interrupts
+  TCB0.CTRLB = TCB_CNTMODE_INT_gc; // Use timer compare mode
+  TCB0.CCMP = 65000; // 65000 for approximately 2Hz
+  TCB0.INTCTRL = TCB_CAPT_bm; // Enable the interrupt
+  TCB0.CTRLA = TCB_CLKSEL_CLKTCA_gc | TCB_ENABLE_bm; // Use Timer A as clock, enable timer
+  interrupts();             // enable all interrupts
   
   Serial.begin(9600); // Starts the serial communication
-
   Serial.println("Lawnmower Test!!!");
 
   AFMS.begin();
@@ -245,6 +263,8 @@ void loop() {
   }
 
   if (connor == 1){
+    if_led_flashing = false;
+    digitalWrite (RLED_Pin, LOW);
     stop_motor();
     delay(1000);
 
@@ -254,7 +274,8 @@ void loop() {
     left_motor->setSpeed(25);
     right_motor->run(BACKWARD);
     left_motor->run(FORWARD);
-    a=0;   
+    a = 0;
+    harsh = 0;   
     mineflip();
     delay(1000);
     if (count==0){
@@ -283,6 +304,7 @@ void loop() {
       stop_motor();
       time_3 = millis();
       move_straight(right_motor_speed, left_motor_speed);
+      var3 = 0;
       while(var3==0){
         int distance_drop = 0;
         for (int i=0; i<5; i++){
@@ -314,4 +336,20 @@ void loop() {
         }
     }
     connor = 0;
+    if_led_flashing = true;
   }
+
+
+// Everytime the time interrupt happens, getting here
+ISR(TCB0_INT_vect)
+{
+   // Do something
+   Serial.println("Flashing");
+   if (led_status == LOW) {digitalWrite (RLED_Pin, HIGH); led_status = HIGH;}
+   else {digitalWrite (RLED_Pin, LOW); led_status = LOW;}
+   if (!if_led_flashing){
+    if (led_status == LOW) {digitalWrite (OLED_Pin, HIGH); led_status = HIGH;}
+     else {digitalWrite (OLED_Pin, LOW); led_status = LOW;}}
+   // Clear interrupt flag
+   TCB0.INTFLAGS = TCB_CAPT_bm;
+}
