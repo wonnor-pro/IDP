@@ -3,9 +3,9 @@
 Adafruit_MotorShield AFMS = Adafruit_MotorShield(); 
 Adafruit_DCMotor *right_motor = AFMS.getMotor(1);
 Adafruit_DCMotor *left_motor = AFMS.getMotor(2);
-int right_motor_speed = 142;
-int left_motot_speed = 150;
-int turn_90 = 2159;
+int right_motor_speed = 188;
+int left_motot_speed = 200;
+int turn_90 = 1619;
 int moving_time = 2000;
 int first = 0;
 

@@ -18,8 +18,8 @@ void loop() {
   // put your main code here, to run repeatedly:
   while (1){
     if (count == 0){delay(2500); count ++;}
-  right_motor->setSpeed(142);
-  left_motor->setSpeed(150);
+  right_motor->setSpeed(188);
+  left_motor->setSpeed(200);
 
   left_motor->run(FORWARD);
   right_motor->run(BACKWARD);
