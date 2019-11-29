@@ -176,7 +176,7 @@ void mineflip(){
   while (harsh==0){
   buttonState = digitalRead(buttonpin);
   temp = buttonState;
-  Serial.println(String(buttonState));
+  //Serial.println(String(buttonState));
   delay(100);
   buttonState = digitalRead(buttonpin);
   if (temp!=buttonState){
@@ -212,13 +212,13 @@ void loop() {
   int distance = 0;
   for (int i=0; i<5; i++){
     distance = distance + getdistance(); 
-//    Serial.print(" sum");
-//    Serial.println(distance);
+    Serial.print(" sum");
+    Serial.println(distance);
     delay(10);}
   average = distance / 5;
 
-//  Serial.print("--------------- Average: ");
-//  Serial.println(average);
+  Serial.print("--------------- Average: ");
+  Serial.println(average);
 
 
 
@@ -344,7 +344,7 @@ void loop() {
 ISR(TCB0_INT_vect)
 {
    // Do something
-   Serial.println("Flashing");
+   //Serial.println("Flashing");
    if (led_status == LOW) {digitalWrite (RLED_Pin, HIGH); led_status = HIGH;}
    else {digitalWrite (RLED_Pin, LOW); led_status = LOW;}
    if (!if_led_flashing){

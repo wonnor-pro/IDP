@@ -20,6 +20,13 @@ const int OLED_Pin = 4;  // LED_O
 const int trigPin_T = 9;
 const int echoPin_T = 8;
 
+
+
+int temp;
+
+
+
+
 // Moving motor variables
 int right_motor_speed = 188;
 int left_motor_speed = 200;
@@ -32,8 +39,8 @@ int moving_straight_time = 3000;
 int count = 0; 
 
 // Distance Variable (Front Ultrasound)
-int threshold = 20;
-int collection_wall_threshold = 10;
+int threshold = 10;
+int collection_wall_threshold = 5;
 long duration; // Ultrasound
 
 
@@ -230,7 +237,7 @@ void flip_mine(){
   
   while (if_north_up == 0){
     buttonState = digitalRead(buttonpin);
-    int temp = buttonState;
+    temp = buttonState;
     Serial.println(String(buttonState));
     delay(100);
     buttonState = digitalRead(buttonpin);
@@ -243,7 +250,16 @@ void flip_mine(){
       mine_motor->run(BACKWARD);
       delay(1000);
       mine_motor->setSpeed(0);
-      if_north_up=1;
+      if_north_up=2;
+
+//  while (if_north_up == 1){
+//    mine_motor->setSpeed(100);
+//    mine_motor->run(BACKWARD);
+//    delay(1000);
+//    mine_motor->setSpeed(0);
+//    if_north_up=2;
+  //}
+    
     } // if
   } // while
   
@@ -343,10 +359,13 @@ void loop() {
     initialise_minemotor();
 
     // Detecting if north-up
-    if_north_up = 0;
+    if_north_up = 0; //this var 0 will be replaced by hall sensor reading
 
     // flip_mine if not
-    if (if_north_up == 0){flip_mine();}
+    if (if_north_up == 0){a=0; flip_mine();}
+    delay(1000);
+
+    if (if_north_up == 1){a=0; flip_mine();}
     delay(1000);
     
     // Turn to the wall
@@ -405,8 +424,11 @@ void loop() {
         delay(d_time1);
 
         // Turn to the sweeping derection
-        if (count == 0){turn(right_motor_speed, left_motor_speed, -90); if_in_collection = 1;} // if count == 0 (Turn left)
-        if (count == 1){turn(right_motor_speed, left_motor_speed,  90); if_in_collection = 1;} // if count == 1 (Turn right)
+        if (count == 0){turn(right_motor_speed, left_motor_speed, -90);} // if count == 0 (Turn left)
+        if (count == 1){turn(right_motor_speed, left_motor_speed,  90);} // if count == 1 (Turn right)
+
+        // Unset the collection flag
+        if_in_collection = 0;
         
       } // if stop at the wall
     } // if in collection
