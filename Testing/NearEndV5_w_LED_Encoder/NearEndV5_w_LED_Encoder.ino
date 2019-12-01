@@ -3,7 +3,7 @@
 
 Adafruit_MotorShield AFMS = Adafruit_MotorShield(); 
 Adafruit_DCMotor *right_motor = AFMS.getMotor(1);
-Adafruit_DCMotor *left_motor = AFMS.getMotor(2);
+Adafruit_CMotor *left_motor = AFMS.getMotor(2);
 Adafruit_DCMotor *mine_motor = AFMS.getMotor(3);
 
 // defines pins numbers

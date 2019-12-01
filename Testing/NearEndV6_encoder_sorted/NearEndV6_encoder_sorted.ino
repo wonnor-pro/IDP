@@ -243,7 +243,7 @@ void flip_mine(){
     buttonState = digitalRead(buttonpin);
     if (temp!=buttonState){a++;}
   
-    if (a==4){
+    if (a==6){
       mine_motor->setSpeed(0);
       delay(1000);
       mine_motor->setSpeed(100);
@@ -396,7 +396,7 @@ void loop() {
     if_in_collection = 1;
     while(if_in_collection == 1){
       
-      int average_drop = get_average_distance(trigPin, echoPin_T);
+      int average_drop = get_average_distance(trigPin, echoPin);
 
       // Stop at the wall
       if (average_drop < collection_wall_threshold){
