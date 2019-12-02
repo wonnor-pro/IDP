@@ -243,7 +243,7 @@ void flip_mine(){
     buttonState = digitalRead(buttonpin);
     if (temp!=buttonState){a++;}
   
-    if (a==6){
+    if (a==4){
       mine_motor->setSpeed(0);
       delay(1000);
       mine_motor->setSpeed(100);

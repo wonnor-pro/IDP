@@ -21,7 +21,8 @@ while 1:  # Do this forever
     # if the value is yes
     if (var == '1'):
         # send 'yes'
-        ArduinoSerial.write(bytes(var.encode('ascii')))
+        ArduinoSerial.write(bytes(var.encode('a'
+                                             'scii')))
         print("LED turned ON")
         time.sleep(1)
 

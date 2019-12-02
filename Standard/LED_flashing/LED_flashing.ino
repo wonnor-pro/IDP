@@ -2,8 +2,8 @@
 //#include <chrono>
 
 
-const int RLED_Pin = 5;
-const int OLED_Pin = 4;
+const int RLED_Pin = 1;
+const int OLED_Pin = 2;
 
 int led_status = LOW;
 int if_led_flashing = true;
